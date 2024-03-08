@@ -48,6 +48,7 @@ app.whenReady().then(() => {
         }
       });
       createWindow()
+      GetSaveData()
     }
   } catch (error) {
     console.log(error)
