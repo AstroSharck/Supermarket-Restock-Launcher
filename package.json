@@ -1,11 +1,29 @@
 {
   "name": "supermarket-restock-launcher",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "icon": "./icon.png",
+  "description": "Launcher for Supermarket Restock",
   "main": "app.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
+
+
+  "build": {
+    "appId": "com.supermarket-restock.app",
+    "productName": "Supermarket Restock",
+    "icon": "icon.ico",
+    "target": "NSIS",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "displayLanguageSelector": true
+
+    }
+  },
+
+
   "repository": {
     "type": "git",
     "url": "https://github.com/AstroSharck/Supermarket-Restock-Launcher/"
@@ -13,7 +31,8 @@
   "author": "AstroSharck",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^29.1.1"
+    "electron": "^29.1.1",
+    "electron-builder": "^24.13.3"
   },
   "dependencies": {
     "axios": "^1.6.7",

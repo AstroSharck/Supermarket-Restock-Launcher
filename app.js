@@ -14,6 +14,7 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1281,
     height: 824,
+    icon: './icon.png',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -28,7 +29,7 @@ const createWindow = () => {
   mainWindow.loadURL('https://supermarketsimulator.zalgo.fr/')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  /* ainWindow.webContents.openDevTools() */
 }
 
 ipcMain.on('api_key', (data, key) => {
