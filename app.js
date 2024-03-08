@@ -34,6 +34,7 @@ const createWindow = () => {
 
 ipcMain.on('api_key', (data, key) => {
   store.set('api_key', key);
+  GetSaveData()
 });
 
 app.whenReady().then(() => {
