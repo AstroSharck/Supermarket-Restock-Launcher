@@ -3,9 +3,14 @@ const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron')
 const path = require('node:path')
 const fs = require('fs');
 const axios = require('axios');
-
 const Store = require('electron-store');
+/* const { autoUpdater, AppUpdater } = require("electron-updater"); */
+
+
 const store = new Store();
+/* autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.forceDevUpdateConfig = true */
 
 let mainWindow;
 
@@ -14,7 +19,10 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1281,
     height: 824,
-    icon: './icon.png',
+    title: 'Supermarket Restock',
+    icon: './icon.ico',
+    minHeight: 824,
+    minWidth: 1281,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -26,10 +34,10 @@ const createWindow = () => {
   })
   Menu.setApplicationMenu(null)
   // and load the index.html of the app.
-  mainWindow.loadURL('https://supermarketsimulator.zalgo.fr/')
+  mainWindow.loadFile('public/index.html')
 
   // Open the DevTools.
-  /* ainWindow.webContents.openDevTools() */
+  mainWindow.webContents.openDevTools()
 }
 
 ipcMain.on('api_key', (data, key) => {
@@ -43,20 +51,22 @@ app.whenReady().then(() => {
     if (localLowPath) {
       fs.watch(localLowPath, (eventType, filename) => {
         if (eventType === 'change') {
-          GetSaveData().then(() => { setTimeout(() => {
-            mainWindow.reload();
-          }, 1000); })
+          GetSaveData().then(() => {
+            setTimeout(() => {
+              mainWindow.reload();
+            }, 1000);
+          })
         }
       });
       createWindow()
-      GetSaveData()
+      /* autoUpdater.checkForUpdates() */
     }
   } catch (error) {
     console.log(error)
     dialog.showMessageBox({
       type: 'error',
       title: 'Erreur',
-      message: 'Impossible de récupérer la sauvegarde de Supermarket Simulator',
+      message: 'Impossible de récupérer la sauvegarde de Supermarket Simulator.',
       buttons: ['OK']
     }).then(() => {
       app.quit();
@@ -67,9 +77,6 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
-
-
-
 
 
 app.on('window-all-closed', () => {
@@ -85,6 +92,25 @@ ipcMain.on('minimize_app', () => {
 });
 
 
+/* autoUpdater.on('update-not-available', (info) => {
+  dispatch('Update not available.')
+})
+
+autoUpdater.on("update-available", (info) => {
+  curWindow.showMessage(`Update available. Current version ${app.getVersion()}`);
+  let pth = autoUpdater.downloadUpdate();
+  curWindow.showMessage(pth);
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+    win.webContents.send('download-progress', progressObj.percent)
+}) */
+
+
+
+
+
+/* Function */
 
 async function GetSaveData() {
   if (!store.get('api_key')) return
